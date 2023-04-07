@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         var random = Random()
         var randomNum = random.nextInt(fileInputList.count())
         //val answer = fileInputList.get(randomNum) //4-2. answer text 임의로 선정하기
-        val answer = "beeps"//TEST
+        val answer = "lousy"//TEST
         println("total length: ${fileInputList.count()}, randomNum: ${randomNum}, random word: ${answer}") //TEST
         //5-1 adaptor for letter List
         val wordListView = findViewById<ListView>(R.id.wordListView)
@@ -52,25 +52,49 @@ class MainActivity : AppCompatActivity() {
                 // 5-3. word letter list 구현 완료
                 for(i in 0 until 5){
                     val temp = letterList(inputWord.get(i).toString(),integerList[i])
+                    var flag = 1
                     when(integerList[i]){
                         0->{
-                            if(!grayItems.contains(temp)){
+                            for(j in 0 until grayItems.count()){
+                                if(grayItems.get(j).letter == temp.letter){
+                                    flag = 0
+                                }
+                            }
+                            if(flag == 1){
                                 grayItems.add(temp)
                                 grayAdapter.notifyDataSetChanged()
                             }
                         }
-                        1->{
-                            if(!yellowItems.contains(temp) && !greenItems.contains(letterList(inputWord.get(i).toString(),2))){
+                        1-> {
+                            for (j in 0 until yellowItems.count()) {
+                                if (yellowItems.get(j).letter == temp.letter) {
+                                    flag = 0
+                                }
+                            }
+                            for (j in 0 until greenItems.count()) {
+                                if (greenItems.get(j).letter == temp.letter) {
+                                    flag = 0
+                                }
+                            }
+                            if (flag == 1) {
                                 yellowItems.add(temp)
                                 yellowAdapter.notifyDataSetChanged()
                             }
                         }
                         2->{
-                            if(!greenItems.contains(temp)){
-                                if(yellowItems.contains(letterList(inputWord.get(i).toString(),1))){
-                                    yellowItems.remove(letterList(inputWord.get(i).toString(),1))
-                                    yellowAdapter.notifyDataSetChanged()
+                            for (j in 0 until greenItems.count()) {
+                                if (greenItems.get(j).letter == temp.letter) {
+                                    flag = 0
                                 }
+                            }
+                            for (j in 0 until yellowItems.count()) {
+                                if (yellowItems.get(j).letter == temp.letter) {
+                                    yellowItems.remove(yellowItems.get(j))
+                                    yellowAdapter.notifyDataSetChanged()
+                                    break
+                                }
+                            }
+                            if(flag == 1){
                                 greenItems.add(temp)
                                 greenAdapter.notifyDataSetChanged()
                             }
